@@ -17,5 +17,5 @@ client.on('data', (data) => {
   console.log(task);
   if (!task) return client.end();
   const result = task.map(caltulations);
-  client.write(JSON.stringify({ result }));
+  client.write(JSON.stringify({ result, from: message.from }));
 });

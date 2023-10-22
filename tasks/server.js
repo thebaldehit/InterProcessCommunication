@@ -14,7 +14,7 @@ const server = net.createServer((socket) => {
     let from = 0;
     let to = taskNumberForOne
     for (const socket of sockets) {
-      const message = { task: task.slice(from, to) };
+      const message = { task: task.slice(from, to), from };
       socket.write(JSON.stringify(message));
       from = to;
       to += taskNumberForOne;
@@ -25,9 +25,10 @@ const server = net.createServer((socket) => {
   socket.on('data', (data) => {
     const message = JSON.parse(data);
     console.log(message.result);
-    results.push(message.result);
+    results.splice(message.from, 0, ...message.result);
+    console.log(results);
 
-    if (results.length === 4) {
+    if (results.length === task.length) {
       process.exit(0);
     }
   });
