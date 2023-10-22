@@ -14,6 +14,7 @@ const client = socket.connect({
 client.on('data', (data) => {
   const message = JSON.parse(data);
   const task = message.task;
+  console.log(task);
   if (!task) return client.end();
   const result = task.map(caltulations);
   client.write(JSON.stringify({ result }));
